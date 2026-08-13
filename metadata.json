@@ -1,0 +1,6 @@
+{
+  "name": "Kaya AI",
+  "description": "AI-powered Construction Intelligence Platform powered by Ray-Ban Meta Smart Glasses",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

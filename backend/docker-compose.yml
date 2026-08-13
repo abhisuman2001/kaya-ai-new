@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  fastapi-app:
+    build: .
+    container_name: sitemind_fastapi_app
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://sitemind_user:sitemind_pass@postgres-db:5432/sitemind_db
+      - REDIS_URL=redis://redis-cache:6379/0
+      - JWT_SECRET=sitemind_super_secret_jwt_key_2026
+      - ENVIRONMENT=development
+    depends_on:
+      - postgres-db
+      - redis-cache
+    restart: always
+
+  postgres-db:
+    image: postgres:16-alpine
+    container_name: sitemind_postgres_db
+    environment:
+      - POSTGRES_USER=sitemind_user
+      - POSTGRES_PASSWORD=sitemind_pass
+      - POSTGRES_DB=sitemind_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: always
+
+  redis-cache:
+    image: redis:7-alpine
+    container_name: sitemind_redis_cache
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: always
+
+volumes:
+  postgres_data:
+  redis_data:

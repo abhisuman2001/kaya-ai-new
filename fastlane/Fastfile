@@ -1,0 +1,25 @@
+default_platform(:android)
+
+platform :android do
+  desc "Runs all Android unit and Robolectric screenshot tests"
+  lane :test do
+    gradle(task: "testDebugUnitTest")
+  end
+
+  desc "Builds signed Android App Bundle (AAB) for Google Play Production"
+  lane :build_release do
+    gradle(
+      task: "bundle",
+      build_type: "Release"
+    )
+  end
+
+  desc "Deploy new release build to Google Play Internal App Sharing"
+  lane :deploy_internal do
+    build_release
+    upload_to_play_store(
+      track: "internal",
+      aab: "app/build/outputs/bundle/release/app-release.aab"
+    )
+  end
+end
